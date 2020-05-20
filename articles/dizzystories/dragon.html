@@ -1,0 +1,363 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Dragon | DizzyAGE Custom Coding </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Dragon | DizzyAGE Custom Coding ">
+    <meta name="generator" content="docfx 2.45.1.0">
+    
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="dragon">Dragon</h1>
+
+<p><img src="images/dragon.png" alt="Dragon" title="Dragon"></p>
+<blockquote>
+<p>This effect is possibly one of the most complex, but also one of the most impressive. It shows you how to put a Dragon into your game; including moving the dragon, activating the flame, and placating the dragon.</p>
+</blockquote>
+<p>This page shows all the coding necessary to put a Dragon into your game, including moving the dragon, activating the flame, and placating the dragon.</p>
+<p>This code is used in the following game:</p>
+<ul>
+<li>Illusion Island Dizzy
+<ul>
+<li><a href="http://www.yolkfolk.com/games/illusion-island-dizzy">Yolkfolk</a></li>
+<li><a href="http://www.yolkfolk.com/dizzyage/game.php?id=146">DizzyAGE</a></li>
+<li><a href="https://dizzyage.github.io/dizzystories/dragon.html">DizzyStories</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="coding-the-dragon">Coding the Dragon</h2>
+<p>The coding shown below is for dragons facing right. if you want the dragon facing left, you will need to alter the 'flame' part of the coding.</p>
+<p>Firstly, download and unzip tiles 6001, 6002 and 6003 from here.</p>
+<p>Then place in the map a body, 6 neck pieces, a head (use tile 6003, the one that moves), and a flame. Set all 8 dragon tiles (6 neck, 1 body, 1 head) as dynamic objects, with property ANIM = 0</p>
+<p>Set user property 43 of the head as a few pixels greater than the Y position of the head. (e.g. if the Y position is 1147, set user property 43 to 1166). User property 43 determines where the head will move to next (so obviously if you draw the head close to the ground, you'll need to set this property to higher than the Y position).</p>
+<p>Place a flame in the map, and set property DRAW to 0 (none) and property CLASS to 0 (none).</p>
+<p>set IDs for them all, numbering them in sequential order, starting with the Body, then the neck parts from nearest the head down to nearest the body, then the head, then the flame. So for example:</p>
+<p>Body ID = 1000
+Neck part 1 ID (nearest the head) = 1001
+Neck part 2 ID = 1002
+Neck part 3 ID = 1003
+Neck part 4 ID = 1004
+Neck part 5 ID = 1005
+Neck part 6 ID (nearest the body) = 1006
+Head ID = 1007 Flame ID = 1008</p>
+<p>Then set the COLLIDER properties of all of them to 1 (call handler), and set the CLASS properties of all of the body parts (not the flame) to 3 (kill).</p>
+<p>Once you've done all that, the map part is complete.</p>
+<p>For the coding, open gamedef.gs and put the following code in:</p>
+<pre><code class="lang-c++">#def O_DRAGONPOS	43			// next position of dragon head
+</code></pre>
+<p>This defines user property 43 as O_DRAGONPOS</p>
+<p>Also insert:</p>
+<pre><code class="lang-c++">#def G_DRAGONPAUSE	134			// pauses dragon head
+</code></pre>
+<p>This is a game variable to store if the dragons head is paused or not.</p>
+<p>Save gamedef.gs and open up game.gs, and put the following code in:</p>
+<pre><code class="lang-c++">//////////////////////////////////////////////////////////
+// Dragons movement
+//
+// body= ID of main body part (body id is first, then neck parts from head down to body, then head, then flame)
+// toppos = highest y position of head
+// bodypos = y position of the top of the body
+// flameend = where the flame stops moving
+//////////////////////////////////////////////////////////
+func Move_Dragon(body,toppos,bodypos,flameend)
+{
+    head = ObjFind(body+7);
+    if(!IsUpdate(ObjGet(head,O_DELAY))) return;
+
+    neck = tab(7);
+    necky = tab(7);
+
+    heady = ObjGet(head,O_Y);
+
+    nextpos = ObjGet(head,O_DRAGONPOS);
+
+    if(ObjGet(head,O_STATUS)&lt;=2)
+    { 
+        if(nextpos==heady)
+        {
+            opt = gs_rand(2);
+            if (opt==1) { ObjSet(head,O_STATUS,1); }
+            else  { ObjSet(head,O_STATUS,2); }
+
+            ObjSet(head,O_DRAGONPOS,toppos+gs_rand(24));
+            nextpos = ObjGet(head,O_DRAGONPOS);
+        }
+
+        headx = ObjGet(head,O_X);
+    }
+
+    //move head up
+    if(heady&gt;nextpos&amp;&amp;ObjGet(head,O_STATUS)==0)
+    {
+        // cycle through neck parts
+        for(ni=1;ni&lt;7;ni++)
+        {
+            neck[ni]=ObjFind(body+ni);
+            necky[ni]=ObjGet(neck[ni],O_Y);
+
+            necky[ni]=bodypos+((heady+4-bodypos-2)/(ni));
+            ObjSet(neck[ni],O_Y,necky[ni]);
+        }
+
+        // set 1st neck part seperately
+        necky[1]=heady+4+((necky[2]-heady-4)/2);
+        ObjSet(neck[1],O_Y,necky[1]);
+
+        // set head part
+        heady=heady-1;
+        ObjSet(head,O_Y,heady);
+        return;
+    }
+    
+    //move head down
+    if(heady&lt;nextpos&amp;&amp;ObjGet(head,O_STATUS)==0)
+    {
+        // cycle through neck parts
+        for(ni=1;ni&lt;7;ni++)
+        {
+            neck[ni]=ObjFind(body+ni);
+            necky[ni]=ObjGet(neck[ni],O_Y);
+
+            necky[ni]=bodypos+((heady+4-bodypos+2)/(ni));
+            ObjSet(neck[ni],O_Y,necky[ni]);
+        }
+
+        // set 1st neck part seperately
+        necky[1]=heady+4+((necky[2]-heady-4)/2);
+        ObjSet(neck[1],O_Y,necky[1]);
+
+        // set head part
+        heady=heady+1;
+        ObjSet(head,O_Y,heady);
+    }
+
+    //stop moving and create flame
+    if(ObjGet(head,O_STATUS)==1)
+    {
+        flame = ObjFind(body+8);
+        if(!IsUpdate(ObjGet(flame,O_DELAY))) return;
+        if(ObjGet(flame,O_STATUS)==0)
+        {
+            ObjSet(head,O_FRAME,1);
+            ObjSet(flame,O_X,headx+16);
+            ObjSet(flame,O_Y,heady+8);
+            ObjSet(flame,O_CLASS,3);
+            ObjSet(flame,O_DISABLE,0);
+            ObjSet(flame,O_DRAW,3);
+            ObjSet(flame,O_STATUS,1);
+        }
+        if(ObjGet(flame,O_W)&lt;40&amp;&amp;ObjGet(flame,O_X)&lt;flameend-ObjGet(flame,O_W))
+        {
+            ObjSet(flame,O_W,ObjGet(flame,O_W)+8);
+            ObjPresent(flame);
+        }
+        else
+        {
+            if(ObjGet(flame,O_X)&gt;=flameend-ObjGet(flame,O_W))
+            {
+                ObjSet(flame,O_W,ObjGet(flame,O_W)-8);
+                if(ObjGet(flame,O_W)&gt;=0)
+                {
+                    ObjSet(head,O_FRAME,0);
+                    ObjSet(flame,O_CLASS,0);
+                    ObjSet(flame,O_DISABLE,1);
+                    ObjSet(flame,O_DRAW,0);
+                    ObjSet(head,O_STATUS,0);
+                    ObjSet(flame,O_STATUS,0);
+                }
+            }
+            ObjSet(flame,O_X,ObjGet(flame,O_X)+8);
+            ObjPresent(flame);
+        }
+    }
+    //stop moving but don't create flame
+    if(ObjGet(head,O_STATUS)==2)
+    {
+        dp = GameGet(G_DRAGONPAUSE);
+        dp = dp+1;
+        GameSet(G_DRAGONPAUSE,dp);
+        if(dp&gt;=10)
+        {
+            GameSet(G_DRAGONPAUSE,0);
+            ObjSet(head,O_STATUS,0);
+        }
+    }			
+    
+    //if dragon put to sleep
+    if(ObjGet(head,O_STATUS)==3&amp;&amp;heady&lt;bodypos+7)
+    {
+        flame = ObjFind(body+8);
+        ObjSet(flame,O_DISABLE,1);
+        ObjSet(flame,O_DRAW,0);
+        ObjSet(flame,O_STATUS,0);
+        ObjSet(head,O_FRAME,0);
+
+        // cycle through neck parts
+        for(ni=1;ni&lt;7;ni++)
+        {
+            neck[ni]=ObjFind(body+ni);
+            necky[ni]=ObjGet(neck[ni],O_Y);
+
+            necky[ni]=bodypos+((heady+4-bodypos+2)/(ni));
+            ObjSet(neck[ni],O_Y,necky[ni]);
+        }
+
+        // set 1st neck part seperately
+        necky[1]=heady+4+((necky[2]-heady-4)/2);
+        ObjSet(neck[1],O_Y,necky[1]);
+
+        // set head part
+        heady=heady+1;
+        ObjSet(head,O_Y,heady);
+
+        if(heady==bodypos+7)
+        {
+            for(ni=1;ni&lt;7;ni++)
+            {
+                ObjSet(neck[ni],O_CLASS,0);
+            }
+            ObjSet(head,O_CLASS,0);
+            bodyidx = ObjFind(body);
+            ObjSet(bodyidx,O_CLASS,0);
+        }
+    }
+}
+</code></pre>
+<p>This is the entire code that deals with moving the dragon, setting the flame position, and moving his head down once placated.</p>
+<p>To get the dragon to move, you need to find the room X and Y numbers that the dragon is in from the map, and use the following code also in game.gs:</p>
+<pre><code class="lang-c++">func UpdateRoom_RX_RY()
+{
+    Move_Dragon(BODY,TOPPOS,BODYPOS,FLAMEEND);
+}
+</code></pre>
+<p>where:</p>
+<ul>
+<li><code>RX</code> is the room X position of the dragon</li>
+<li><code>RY</code> is the room Y position of the dragon</li>
+<li><code>BODY</code> is the ID of the dragon body</li>
+<li><code>TOPPOS</code> is the highest Y position that you want the head to go up to</li>
+<li><code>BODYPOS</code> is the Y position of the body +10 (e.g if body Y position is 1151, - <code>BODYPOS</code> would be 1161)</li>
+<li><code>FLAMEEND</code> is the X position in the map that you want the flame to end.</li>
+</ul>
+<p>To placate the dragon, use this code in the relevant function:</p>
+<pre><code class="lang-c++">head = ObjFind(HEADID);
+ObjSet(head,O_STATUS,3);
+for(i=BODYID;i&lt;FLAMEID;i++)
+{
+    idx = ObjFind(i);
+    ObjSet(idx,O_CLASS,0);
+    ObjSet(idx,O_COLLIDER,0);
+}
+</code></pre>
+<p>where:</p>
+<ul>
+<li><code>HEADID</code> is the ID of the head</li>
+<li><code>BODYID</code> is the ID of the body</li>
+<li><code>FLAMEID</code> is the ID of the flame</li>
+</ul>
+<p>And that's it!</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>
